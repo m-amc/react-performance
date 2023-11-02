@@ -21,8 +21,8 @@ function Menu({
           getItemProps={getItemProps}
           item={item}
           index={index}
-          selectedItem={selectedItem}
-          highlightedIndex={highlightedIndex}
+          selectedItem={selectedItem?.id === item.id}
+          highlightedIndex={highlightedIndex === index}
         >
           {item.name}
         </ListItem>
@@ -31,17 +31,26 @@ function Menu({
   )
 }
 // 🐨 Memoize the Menu here using React.memo
+Menu = React.memo(Menu)
 
 function ListItem({
   getItemProps,
   item,
   index,
-  selectedItem,
-  highlightedIndex,
+  // selectedItem,
+  // highlightedIndex,
+  isSelected, // use boolean prop instead of selectedItem
+  isHighlighted, // use boolean prop instead of selectedItem
   ...props
 }) {
-  const isSelected = selectedItem?.id === item.id
-  const isHighlighted = highlightedIndex === index
+  /**
+   * Note: by using primitive props (isSelected and isHighlighted)
+   * The calculations will now be part of the
+   * parent component calculation instead of the ListItem component!
+   */
+
+  // const isSelected = selectedItem?.id === item.id
+  // const isHighlighted = highlightedIndex === index
   return (
     <li
       {...getItemProps({
@@ -57,6 +66,7 @@ function ListItem({
   )
 }
 // 🐨 Memoize the ListItem here using React.memo
+ListItem = React.memo(ListItem)
 
 function App() {
   const forceRerender = useForceRerender()
